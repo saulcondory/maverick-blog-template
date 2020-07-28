@@ -1,0 +1,1 @@
+# maverick-blog-template
