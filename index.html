@@ -84,6 +84,13 @@
             border-left: 1px solid darkslategray;
             padding-left: 10px;
         }
+        .posts {
+            width: 400px;
+            margin: 0 auto;
+        }
+        .posts div img {
+            width: 400px;
+        }
     </style>
 </head>
 <body>
@@ -118,5 +125,35 @@
             </div>
         </div>
     </div>
+    <div id="posts" class="posts"></div>
+    <script>
+        const postsContainer = document.getElementById('posts');
+        const appId = 'gIielx2juJK5ME9OoPLz';
+        fetch('https://dummyapi.io/data/api/post', {
+            method: 'GET',
+            headers: {
+                'app-id': appId,
+            },
+        })
+        .then(response => response.json())
+        .then(response => {
+            const posts = response.data;
+            posts.forEach(post => {
+                console.log('------');
+                console.log(post);
+                const postElem = document.createElement('div');
+                const textElem = document.createElement('div');
+                const imgElem = document.createElement('img');
+                imgElem.src = post.image;
+                textElem.innerHTML = post.text;
+                postElem.appendChild(imgElem);
+                postElem.appendChild(textElem);
+                postsContainer.appendChild(postElem);
+            });
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    </script>
 </body>
 </html>
