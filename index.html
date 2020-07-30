@@ -31,6 +31,7 @@
         .top-bar__menu span {
             width: 80px;
             font-size: 11px;
+            transition: color 0.5s
         }
         .top-bar__menu span:hover {
             color: rgba(0, 0, 0, .5);
@@ -38,10 +39,50 @@
         }
         .top-bar__social-media i {
             width: 25px;
+            transition: color 0.5s
         }
         .top-bar__social-media i:hover {
             color: red;
             cursor: pointer;
+        }
+        .brand-logo {
+            text-align: center;
+            padding: 35px;
+        }
+        .nav-bar {
+            font-size: 11px;
+            color: rgba(0, 0, 0, .85);
+            border-top: 1px solid #efefef;
+            border-bottom: 1px solid #efefef;
+            padding: 16px 0;
+        }
+        .nav-bar__menu {
+            margin: 0 auto;
+            width: 800px;
+            position: relative;
+            text-align: center;
+        }
+        .nav-bar__menu span {
+            letter-spacing: 2px;
+            padding: 0 16px;
+            transition: color 0.5s;
+        }
+        .nav-bar__menu span:not(:first-child) {
+            border-left: 1px solid lightgray;
+        }
+        .nav-bar__menu span:hover {
+            cursor: pointer;
+            color: rgba(0, 0, 0, .5);
+        }
+        .nav-bar__search {
+            position: absolute;
+            right: 0;
+            top: 0;
+            color: rgba(0, 0, 0, .35);
+            font-size: 13px;
+            font-weight: bold;
+            border-left: 1px solid darkslategray;
+            padding-left: 10px;
         }
     </style>
 </head>
@@ -58,6 +99,22 @@
                 <i class="fa fa-twitter"></i>
                 <i class="fa fa-instagram"></i>
                 <i class="fa fa-pinterest"></i>
+            </div>
+        </div>
+    </div>
+    <div class="brand-logo">
+        <img src="assets/images/maverick.png" alt="">
+    </div>
+    <div class="nav-bar">
+        <div class="nav-bar__menu">
+            <span>HOME</span>
+            <span>ABOUT US</span>
+            <span>DROP DOWN +</span>
+            <span>RESTAURANT</span>
+            <span>MEGA MENU +</span>
+            <span>DOWNLOAD</span>
+            <div class="nav-bar__search">
+                <i class="fa fa-search"></i>
             </div>
         </div>
     </div>
