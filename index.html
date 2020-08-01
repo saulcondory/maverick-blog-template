@@ -58,7 +58,7 @@
         }
         .nav-bar__menu {
             margin: 0 auto;
-            width: 800px;
+            max-width: 800px;
             position: relative;
             text-align: center;
         }
@@ -85,11 +85,60 @@
             padding-left: 10px;
         }
         .posts {
-            width: 400px;
-            margin: 0 auto;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
         }
-        .posts div img {
-            width: 400px;
+        .posts-column {
+            max-width: 400px;
+            width: 30%;
+        }
+        .post {
+            padding: 0 10px;
+            margin-bottom: 40px;
+        }
+        .post-img {
+            width: 100%;
+        }
+        .post-text {
+            word-wrap: break-word;
+            font-size: 13px;
+            color: rgba(0, 0, 0, .75);
+            text-align: justify;
+        }
+        .post-tags {
+            font-size: 10px;
+            color: #999;
+            font-weight: bold;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+        .post-tags span {
+            margin: 5px 5px 10px;
+        }
+        .post-owner {
+            font-size: 10px;
+            color: #666;
+            text-align: right;
+            margin: 10px 0;
+        }
+        .post-btn {
+            font-size: 10px;
+            letter-spacing: 2px;
+            font-weight: lighter;
+            border: 1px solid #dedede;
+            width: 150px;
+            padding: 10px 0;
+            text-align: center;
+            margin: 0 auto;
+            transition: color .35s, background-color .35s;
+        }
+        .post-btn:hover {
+            background: green;
+            color: white;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -129,7 +178,7 @@
     <script>
         const postsContainer = document.getElementById('posts');
         const appId = 'gIielx2juJK5ME9OoPLz';
-        fetch('https://dummyapi.io/data/api/post', {
+        fetch('https://dummyapi.io/data/api/post?limit=21', {
             method: 'GET',
             headers: {
                 'app-id': appId,
@@ -138,22 +187,55 @@
         .then(response => response.json())
         .then(response => {
             const posts = response.data;
-            posts.forEach(post => {
-                console.log('------');
-                console.log(post);
-                const postElem = document.createElement('div');
-                const textElem = document.createElement('div');
-                const imgElem = document.createElement('img');
-                imgElem.src = post.image;
-                textElem.innerHTML = post.text;
-                postElem.appendChild(imgElem);
-                postElem.appendChild(textElem);
-                postsContainer.appendChild(postElem);
-            });
+            for (let index = 0; index < 3; index++) {
+                const columnPosts = createPostsColumn(posts.splice(0, 7));
+                columnPosts.classList.add('posts-column');
+                postsContainer.appendChild(columnPosts);
+            }
         })
         .catch((error) => {
             console.error('Error:', error);
         });
+
+        let createPostsColumn = function(posts) {
+            const columnPostContainer = document.createElement('div');
+            posts.forEach(post => {
+                const tagsElem = document.createElement('div');
+                post.tags.forEach(tag => {
+                    const tagElem = document.createElement('span');
+                    tagElem.innerHTML = tag.toUpperCase();
+                    tagsElem.appendChild(tagElem);
+                });
+                tagsElem.classList.add('post-tags');
+                
+                const ownerElem = document.createElement('div');
+                const owner = post.owner;
+                ownerElem.innerHTML = `${owner.title} ${owner.firstName} ${owner.lastName}`;
+                ownerElem.classList.add('post-owner');
+
+                const textElem = document.createElement('div');
+                textElem.innerHTML = post.text;
+                textElem.classList.add('post-text');
+
+                const imgElem = document.createElement('img');
+                imgElem.src = post.image;
+                imgElem.classList.add('post-img');
+                
+                const btnElem = document.createElement('div');
+                btnElem.innerHTML = 'CONTINUE READING';
+                btnElem.classList.add('post-btn');
+
+                const postElem = document.createElement('div');
+                postElem.classList.add('post');
+                postElem.appendChild(imgElem);
+                postElem.appendChild(tagsElem);
+                postElem.appendChild(textElem);
+                postElem.appendChild(ownerElem);
+                postElem.appendChild(btnElem);
+                columnPostContainer.appendChild(postElem);
+            });
+            return columnPostContainer;
+        }
     </script>
 </body>
 </html>
