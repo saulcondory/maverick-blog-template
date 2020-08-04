@@ -97,6 +97,7 @@
         .post {
             padding: 0 10px;
             margin-bottom: 40px;
+            position: relative;
         }
         .post-img {
             width: 100%;
@@ -139,6 +140,17 @@
             background: green;
             color: white;
             cursor: pointer;
+        }
+        .post-img-pinit {
+            width: 50px;
+            position: absolute;
+            top: 0;
+            left: 10px;
+            display: none;
+        }
+
+        .post:hover .post-img-pinit {
+            display: block;
         }
     </style>
 </head>
@@ -221,6 +233,10 @@
                 imgElem.src = post.image;
                 imgElem.classList.add('post-img');
                 
+                const pintItElem = document.createElement('img');
+                pintItElem.src = 'assets/images/pinit.jpg';
+                pintItElem.classList.add('post-img-pinit');
+                
                 const btnElem = document.createElement('div');
                 btnElem.innerHTML = 'CONTINUE READING';
                 btnElem.classList.add('post-btn');
@@ -228,6 +244,7 @@
                 const postElem = document.createElement('div');
                 postElem.classList.add('post');
                 postElem.appendChild(imgElem);
+                postElem.append(pintItElem);
                 postElem.appendChild(tagsElem);
                 postElem.appendChild(textElem);
                 postElem.appendChild(ownerElem);
