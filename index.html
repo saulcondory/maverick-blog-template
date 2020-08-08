@@ -146,11 +146,14 @@
             position: absolute;
             top: 0;
             left: 10px;
-            display: none;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.5s linear;
         }
 
         .post:hover .post-img-pinit {
-            display: block;
+            visibility: visible;
+            opacity: 1;
         }
     </style>
 </head>
@@ -186,11 +189,67 @@
             </div>
         </div>
     </div>
-    <div id="posts" class="posts"></div>
+    <div id="main"></div>
     <script>
-        const postsContainer = document.getElementById('posts');
+        const mainContainer = document.getElementById('main');
+        const postsContainer = document.createElement('div');
+        postsContainer.classList.add('posts');
+
+        const postDetails = document.createElement('div');
+        const goBack = document.createElement('div');
+        goBack.innerHTML = '<h5>GO BACK!</h5>';
+        goBack.addEventListener('click', () => {
+            mainContainer.removeChild(postDetails);
+            mainContainer.removeChild(goBack);
+            mainContainer.appendChild(postsContainer);
+        });
+            
+        mainContainer.appendChild(postsContainer);
+
+        let continueReading = (post) => {
+            console.log(`Continue Reading ${post.id}`);
+            mainContainer.removeChild(postsContainer);
+            mainContainer.appendChild(goBack);
+            mainContainer.appendChild(postDetails);
+
+            const postDetailsElem = document.createElement('div');
+            const postText = document.createElement('p');
+            postText.innerHTML = post.text;
+            const postImage = document.createElement('img');
+            postImage.src = post.image;
+
+            postDetails.innerHTML = '';
+            postDetails.appendChild(postImage);
+            postDetails.appendChild(postText);
+
+            const commentsList = document.createElement('div');
+            commentsList.classList.add('comments');
+            commentsList.innerHTML = '<h4>Comments</h4>';
+            postDetails.appendChild(commentsList);
+
+            fetch(`https://dummyapi.io/data/api/post/${post.id}/comment`, {
+                method: 'GET',
+                headers: {
+                    'app-id': appId,
+                },
+            })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response.data);
+                response.data.forEach((comment) => {
+                    const commentElem = document.createElement('h5');
+                    commentElem.innerHTML = comment.message;
+                    console.log(commentElem);
+                    commentsList.appendChild(commentElem);
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        };
+
         const appId = 'gIielx2juJK5ME9OoPLz';
-        fetch('https://dummyapi.io/data/api/post?limit=21', {
+        fetch('https://dummyapi.io/data/api/post?limit=21&page=2', {
             method: 'GET',
             headers: {
                 'app-id': appId,
@@ -199,8 +258,9 @@
         .then(response => response.json())
         .then(response => {
             const posts = response.data;
+            console.log(posts);
             for (let index = 0; index < 3; index++) {
-                const columnPosts = createPostsColumn(posts.splice(0, 7));
+                const columnPosts = createPostsColumn(posts.slice(index * 7, (index + 1) * 7));
                 columnPosts.classList.add('posts-column');
                 postsContainer.appendChild(columnPosts);
             }
@@ -240,6 +300,9 @@
                 const btnElem = document.createElement('div');
                 btnElem.innerHTML = 'CONTINUE READING';
                 btnElem.classList.add('post-btn');
+                btnElem.addEventListener('click', () => {
+                    continueReading(post);
+                });
 
                 const postElem = document.createElement('div');
                 postElem.classList.add('post');
