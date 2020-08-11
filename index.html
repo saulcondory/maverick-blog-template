@@ -155,6 +155,16 @@
             visibility: visible;
             opacity: 1;
         }
+
+        .post-details {
+            max-width: 800px;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .post-details img {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -196,6 +206,7 @@
         postsContainer.classList.add('posts');
 
         const postDetails = document.createElement('div');
+        postDetails.classList.add('post-details');
         const goBack = document.createElement('div');
         goBack.innerHTML = '<h5>GO BACK!</h5>';
         goBack.addEventListener('click', () => {
@@ -212,7 +223,6 @@
             mainContainer.appendChild(goBack);
             mainContainer.appendChild(postDetails);
 
-            const postDetailsElem = document.createElement('div');
             const postText = document.createElement('p');
             postText.innerHTML = post.text;
             const postImage = document.createElement('img');
